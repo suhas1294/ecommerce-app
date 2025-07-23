@@ -218,3 +218,15 @@ type Product struct {
   Category    Category `gorm:"foreignKey:CategoryRef"`
 }
 ```
+
+__When not to prefer eager loading__ :
+When we have a table/struct which has nested data like below, then just image loading 100 order would have to load rest of the unnecessary data as well. 
+
+* Order
+  * User
+  * Products
+    * Categories
+    * Vendors
+      * Addresses
+      * Documents
+        * ScanFiles
