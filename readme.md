@@ -171,3 +171,50 @@ type Product struct {
 This will automatically create a table user_wishlists with columns:
 * `user_id`
 * `product_id`
+
+*** 
+
+__Summary of types created in our project at this point__ : 
+
+__Note__ : GORM will automatically create a `user_wishlists` table for the many2many relation.
+
+
+| Relation     | Example                    | Struct Field                                                 |
+| :----------- | :------------------------- | :----------------------------------------------------------- |
+| One-to-One   | Order → Payment            | `Payment Payment`                                            |
+| One-to-Many  | User → Orders              | `Orders []Order`                                             |
+| Many-to-Many | User ↔ Products (Wishlist) | `Wishlists []Product \`gorm:"many2many\:user\_wishlists"\`\` |
+| Belongs To   | OrderItem → Order, Product | `OrderID uint`                                               |
+
+
+__Why some fields will be of pointer type__ ? 
+
+When to use pointer:
+
+1. If the relation is optional (can be nil).
+2. If you want to defer loading (e.g., via Preload) or avoid loading related objects unless needed.
+3. To avoid zero-value struct initialization overhead.
+
+example : 
+```go
+type Payment struct {
+  OrderID uint
+  Order   *Order // optional relation
+}
+```
+
+Definition of foreign key in terms of SQL : 
+```sql
+user_id INTEGER,
+FOREIGN KEY (user_id) REFERENCES users(id)
+```
+Means every user_id value in orders must exist in users.id.
+
+__Note__ : 
+If we dont want to follow convention of declaring field name as `<OtherStructFieldName>ID`, and want to declare our own field name which acts as foreign key : 
+```go
+type Product struct {
+  CategoryRef uint `gorm:"column:category_ref"`
+  Category    Category `gorm:"foreignKey:CategoryRef"`
+}
+```
