@@ -8,8 +8,8 @@ type Product struct {
 	Description  string    `gorm:"type:text" json:"description"`
 	Price        float64   `gorm:"not null" json:"price"`
 	Stock        int       `gorm:"default:0" json:"stock"`
-	CategoryRef  uint      `gorm:"column:category_ref;" json:"category_ref"` // foreign key - breaking convention over configuration
-	Category     Category  `gorm:"foreignKey:CategoryRef" json:"category"`   // Belongs to Category, we are having this field apart fomr category_id just to eager load data
+	CategoryRef  uint      `json:"category_ref"`                           // foreign key - breaking convention over configuration
+	Category     Category  `gorm:"foreignKey:CategoryRef" json:"category"` // Belongs to Category, we are having this field apart fomr category_id just to eager load data
 	WishlistedBy []User    `gorm:"many2many:user_wishlist" json:"wishlisted_by"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`

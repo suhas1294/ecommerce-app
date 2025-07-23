@@ -202,6 +202,8 @@ type Payment struct {
   Order   *Order // optional relation
 }
 ```
+__Definition of foreign key__ : 
+A foreign key in one table always refers to a primary key in another table. a `Many` table will contain foreign key.
 
 Definition of foreign key in terms of SQL : 
 ```sql
@@ -267,4 +269,15 @@ __Common scenarios__ :
 3. Comments with their users
 4. In nested templates rendering: listing 100 users, then for each user loading 10 posts
 
+***
 
+Next dependencies installation : 
+```bash
+go get github.com/go-chi/chi/v5
+go get github.com/golang-jwt/jwt/v5
+go get golang.org/x/crypto/bcrypt
+go get github.com/go-playground/validator/v10
+go get github.com/joho/godotenv
+go get gorm.io/gorm
+go get gorm.io/driver/sqlite
+```
