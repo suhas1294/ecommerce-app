@@ -1,4 +1,4 @@
-module github.com/yourusername/ecommerce-app
+module ecommerce-app
 
 go 1.24.5
 
