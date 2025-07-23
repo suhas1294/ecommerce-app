@@ -7,11 +7,18 @@ import (
 	"gorm.io/gorm"
 )
 
+type User struct {
+	ID    uint   `gorm:"primaryKey"`
+	Email string `gorm:"uniqueIndex"`
+	Name  string
+}
+
 func main() {
-	_, err := gorm.Open(sqlite.Open("ecommerce.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("ecommerce.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("failed to connect database:", err)
 	}
 
-	log.Println("SQLite connected successfully via GORM 🎉")
+	db.AutoMigrate(&User{})
+	log.Println("User table created if it didn’t exist")
 }
