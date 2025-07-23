@@ -230,3 +230,41 @@ When we have a table/struct which has nested data like below, then just image lo
       * Addresses
       * Documents
         * ScanFiles
+
+***
+
+### The N+1 Query problem
+
+The N+1 problem happens when your application runs one query to fetch a list of records, and then for each of those records, it runs an additional query to fetch related data.
+
+Bad code : 
+```go
+var products []Product
+db.Find(&products) // 1 query to fetch products
+
+for _, p := range products {
+    var category Category
+    db.First(&category, p.CategoryID) // N queries (1 per product)
+}
+```
+
+Total Queries: 1 + 1000 = 1001 queries\
+Problem: Hugely inefficient — every product makes an additional DB round-trip.
+
+How to __Fix N+1 Problem__? (Eager loading)
+
+Use Preload to fetch everything in 2 queries:
+```go
+var products []Product
+db.Preload("Category").Find(&products)
+```
+
+__Thumb rule__ : If you don’t prefetch, you’re running into the N+1 trap.
+
+__Common scenarios__ : 
+1. Fetching articles with their authors
+2. Orders with their items
+3. Comments with their users
+4. In nested templates rendering: listing 100 users, then for each user loading 10 posts
+
+
