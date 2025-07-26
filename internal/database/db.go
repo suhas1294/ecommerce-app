@@ -25,6 +25,10 @@ func ConnectAndMigrate() {
 	}
 
 	database, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+	// "Open a database connection using SQLite as the backend (called a dialect) and configure GORM with the settings I pass inside gorm.Config{}."
+	// A dialect in GORM is the database engine you want to use.
+	// analogy : car := NewCar(engine, &CarOptions{}) // engine = petrol/diesel/electric, car = final object, car options = ac / sunroof etc etc
+
 	if err != nil {
 		log.Fatal("Failed to connect to database: ", err)
 	}
